@@ -2,18 +2,10 @@
 
 ---
 
-### Category Name 1 
+### DISASTER! Project
 
-[Project 1 Title](/sample_page)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
-
----
-[Project 2 Title](/pdf/sample_presentation.pdf)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
-
----
-[Project 3 Title](http://example.com/)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[This project displays earthquake activity relative to active volcanoes](/sample_page)
+<img src="images/Disaster_volcano_earthquake_html_screenshot.PNG?raw=true"/>
 
 ---
 
