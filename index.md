@@ -11,9 +11,9 @@
 
 ### Project Links:
 
-- [DISASTER!](https://codepen.io/whoisthatmatguy/full/GRjjXaw)
+# - [DISASTER!](https://codepen.io/whoisthatmatguy/full/GRjjXaw)
 
-- [Lab 8 Webmap](/lab8_webmap/index.html)
+# - [Lab 8 Webmap](/lab8_webmap/index.html)
 ---
 
 
