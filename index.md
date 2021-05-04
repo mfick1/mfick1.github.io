@@ -12,7 +12,7 @@
 ### Project Links:
 
 - [DISASTER!](https://codepen.io/whoisthatmatguy/full/GRjjXaw)
-- [Lab 8 Webmap](/lab8_webmap/index.html)
+- [Lab 8 Webmap](/Lab_8_Bivariate_Map/index.html)
 ---
 
 
