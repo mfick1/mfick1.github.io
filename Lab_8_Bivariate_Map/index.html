@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 1184px;
+            height: 813px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/bi_cc_race_inc_1.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[38.310464583688095,-76.95766515363425],[38.78581506565545,-76.07181652373211]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_StamenWatercolor_0');
+        map.getPane('pane_StamenWatercolor_0').style.zIndex = 400;
+        var layer_StamenWatercolor_0 = L.tileLayer('http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg', {
+            pane: 'pane_StamenWatercolor_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_StamenWatercolor_0;
+        map.addLayer(layer_StamenWatercolor_0);
+        function pop_bi_cc_race_inc_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEOID'] !== null ? autolinker.link(feature.properties['GEOID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nn_hs_E'] !== null ? autolinker.link(feature.properties['nn_hs_E'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nn_hs_M'] !== null ? autolinker.link(feature.properties['nn_hs_M'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ttl_ppE'] !== null ? autolinker.link(feature.properties['ttl_ppE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ttl_ppM'] !== null ? autolinker.link(feature.properties['ttl_ppM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['md_hh_E'] !== null ? autolinker.link(feature.properties['md_hh_E'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['md_hh_M'] !== null ? autolinker.link(feature.properties['md_hh_M'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['whitpct'] !== null ? autolinker.link(feature.properties['whitpct'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['bi_clss'] !== null ? autolinker.link(feature.properties['bi_clss'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_bi_cc_race_inc_1_0(feature) {
+            switch(String(feature.properties['bi_clss'])) {
+                case '1-1':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,190,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1-2':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(137,161,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1-3':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,133,193,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2-1':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(188,124,143,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2-2':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,106,138,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2-3':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,87,134,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3-1':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(174,58,78,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3-2':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,50,76,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3-3':
+                    return {
+                pane: 'pane_bi_cc_race_inc_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,41,73,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_bi_cc_race_inc_1');
+        map.getPane('pane_bi_cc_race_inc_1').style.zIndex = 401;
+        map.getPane('pane_bi_cc_race_inc_1').style['mix-blend-mode'] = 'normal';
+        var layer_bi_cc_race_inc_1 = new L.geoJson(json_bi_cc_race_inc_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_bi_cc_race_inc_1',
+            layerName: 'layer_bi_cc_race_inc_1',
+            pane: 'pane_bi_cc_race_inc_1',
+            onEachFeature: pop_bi_cc_race_inc_1,
+            style: style_bi_cc_race_inc_1_0,
+        });
+        bounds_group.addLayer(layer_bi_cc_race_inc_1);
+        map.addLayer(layer_bi_cc_race_inc_1);
+        setBounds();
+        </script>
+    </body>
+</html>
