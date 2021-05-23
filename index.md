@@ -27,7 +27,7 @@
 ---
 [Lab 8](/Lab_8_Bivariate_Map/index.html)
 <br>This lab displays a choropleth map comparing Race and Median Household income by Calvert County, Maryland census tracts.<br/>
-
+[<img src="images/Bivariate Map of Calvert County Income versus White Population?raw=true"/>](/lab_8/index.md)
 
 ---
 <p style="font-size:11px">Page template forked from <a href="https://github.com/evanca/quick-portfolio">evanca</a></p>
