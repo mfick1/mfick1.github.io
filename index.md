@@ -4,12 +4,12 @@
 
 ### Projects and Labs:
 
-[DISASTER!](/disaster_project/index.md)
+[<strong>DISASTER!<strong/>](/disaster_project/index.md)
 <br>This project displays an interactive web map of global earthquake activity relative to active volcanoes between the dates of May 25th, 2019 and June 16th, 2019.<br/>
 <img src="images/Disaster_volcano_earthquake_html_screenshot.PNG?raw=true"/>(disaster_project/index.md)
 
 ---
-[Project 1](project1_486/index.md)
+[<strong>Project 1<strong/>](project1_486/index.md)
 <br>This project displays the progression of major earthquake activity in Japan relative to Mt. Fuji, and the resulting potential hazards if Mt. Fuji were to explode within the next decade.<br/>
 [<img src="images/Population in Danger from Eruption (1).png?raw=true"/>](/project1_486/index.md)
 
