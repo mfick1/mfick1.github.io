@@ -29,7 +29,7 @@
 [<img src="images/Rent above $1500 vs Median Household Income in Baltimore and D.C. surrounding Areas 2014-2019.png?raw=true"/>](/lab_6/index.md)
 
 ---
-[Lab 8](/Lab_8/index.html)
+[Lab 8](Lab_8/index.html)
 <br>This lab displays a choropleth map comparing Race and Median Household income by Calvert County, Maryland census tracts.<br/>
 [<img src="images/Bivariate Map of Calvert County Income versus White Population.png?raw=true"/>](/lab_8/index.md)
 
