@@ -2,7 +2,7 @@
 
 ### Bivariate Map of Percent White Population vs Median Household Income from Calvert County, Maryland Census Tracts(2014-2019)
 
-<img src="images/Bivariate Map of Calvert County Income versus White Population.png"/>
+<img src="/images/Bivariate Map of Calvert County Income versus White Population.png"/>
 
 ### Web Map
 
