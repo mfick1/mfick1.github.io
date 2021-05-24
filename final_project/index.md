@@ -27,3 +27,8 @@ The final map below depicts the potential range of environmental hazards in the 
 
 <img src="images/Impact of Spill on Environment and Wildlife (1).png?raw=true"/>
 
+### Web Map
+
+Below, a webmap can be found which depicts a buffer zone of potential crude oil from a hypothetical spill relative to Alaskan population by census tract.
+
+[Web Map](https://github.com/mfick1/mfick1.github.io/tree/master/final_project/GES486_Final_Project_QGIS2Web-20210524T163348Z-001/GES486_Final_Project_QGIS2Web/index.html)
