@@ -6,7 +6,7 @@
 
 [DISASTER!](/disaster_project/index.md)
 <br>This project displays an interactive web map of global earthquake activity relative to active volcanoes between the dates of May 25th, 2019 and June 16th, 2019.<br/>
-<img src="images/Disaster_volcano_earthquake_html_screenshot.PNG?raw=true"/>(disaster_project/index.md)
+<img src="images/Disaster_volcano_earthquake_html_screenshot.PNG?raw=true"/>(/disaster_project/index.md)
 
 ---
 [Project 1](project1_486/index.md)
