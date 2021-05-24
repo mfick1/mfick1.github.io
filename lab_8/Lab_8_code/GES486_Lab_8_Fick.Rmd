@@ -1,0 +1,297 @@
+---
+title: "GES 486 - Lab 8"
+author: "Mathieu Fick"
+date: "4/25/21"
+output: html_document
+---
+
+### Instructions
+
+**For each question below, show code.**  Once you've completed things, don't forget to to upload this document (knitted version please!) to Blackboard!
+
+A few tips:
+  
+* Don't forget to knit your document frequently!
+* Don't forget to `install.packages()` and load them using `library()`.
+* Don't forget to use `?` or `help()` if you're unsure about a function
+* **EXPLAIN WHAT YOUR RESULTS MEAN!**  Think about the numbers and visualizations and explain, in words, what they mean.
+* Make sure you label all axes and legends and add a title to your plots and maps.
+
+**25 points total + 2 points extra-credit**
+
+***
+```{r, setup, include=FALSE}
+#setup
+knitr::opts_knit$set(root.dir = "D:/UMBC Spring 2021 Semester/GES 486/Lab 8")
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+#theme_set(theme_bw()) uncomment to use the bw theme in all ggplot maps
+library(sf)
+library(sp)
+options(tigris_class = "sf")
+options(tigris_use_cache = TRUE)
+census_api_key("2a0112f9d529d3d55144acc4e6ae3bb9bb49cb5c", install = TRUE, overwrite = TRUE)
+library(biscale)
+library(cowplot)
+```
+
+**1. Use `tidycensus` to download 1. race/ethnicity (B03002) and 2. median household income for Baltimore City. Store this data in a new object. Choose which race/ethnicity you'd like to relate to income (Non-Hispanic Black and Non-Hispanic White work best). Which census tract has the highest _percentage_ of your target race/ethnicity (and what is the percent) and which has the highest median household income (and how much is it?)? (5 points)** Reminder: Since we will be mapping our data, make sure you include use `geometry = TRUE` in `get_acs()` 
+
+1) I used the ACS 2019 5-year estimate survey to download the median household income, total population, and non-hispanic white population for Baltimore City. The census tract with the highest percentage of non-hispanic white population is Census Tract 2404, with the percentage of white population comprising 91.8% of the population in this tract. The census tract with the highest median household income is Census Tract 2711.02, with a household median income of $195,156.     
+
+```{r q1}
+
+# use tidycensus to obtain tract data for total pop, non-hispanic white pop, and household median income
+md_race_income_2019 <- get_acs(geography = "tract",
+                            variables = c("non_his_white" = "B03002_003", # non-hispanic white population
+                                          "total_pop" = "B03002_001", # total population
+                                          "med_hh_inc" = "B19013_001" # Median household income
+                                          ),
+                            year = 2019,
+                            state = c(24), # Maryland
+                            county = c(510), # Baltimore City
+                            survey = "acs5", # 5 year survey
+                            geometry = TRUE, #to download for mapping
+                            output = "wide")
+
+# create a new variable to append to our data representing percent white population per tract
+md_race_income_2019$whitepct <- (md_race_income_2019$non_his_whiteE / md_race_income_2019$total_popE) * 100
+
+# Get a general idea of values for each column to narrow down filtering for max function
+head(md_race_income_2019)
+
+md_race_income_2019 <- md_race_income_2019 %>%
+  filter(total_popE > 0)
+
+# filter percent white pop to determine the max value 
+md_race_income_2019 %>%
+  filter(whitepct > 80) %>% # use values above 80% to narrow down our search
+  filter(whitepct== max(whitepct))
+
+# filter medium household income to determine max value
+md_race_income_2019 %>% 
+  filter(med_hh_incE > 30000) %>% # use values above 30000 to narrow our search
+  filter(med_hh_incE== max(med_hh_incE))
+
+```
+
+**2. Please reproject this data to Web Mercator. (1 points)**
+
+2) Used `st_crs` on initial variable to check the original projection: NAD83. I then used `st_transform` and stored the newly projected data in a new variable. I then used `st_crs` a second time on the new variable to ensure the reprojection to Web Mercator took place effectively. 
+```{r q2}
+
+# check initial projection (should be NAD83)
+st_crs(md_race_income_2019)
+
+# use st_transform to reproject
+md_race_income_2019_webmerc <- st_transform(md_race_income_2019, crs = 3857)
+
+# check to make sure the transform worked
+st_crs(md_race_income_2019_webmerc)
+
+```
+
+**3. Create two plots. In the first plot highlight the tract with the highest concentration of your selected race/eth. In the second plot highlight the tract with the highest median household income? (5 points)**
+
+```{r q3}
+
+# plot tract with highest % white population over the full Balt City map
+md_race_income_2019_webmerc %>% 
+  filter(whitepct > 80) %>% 
+  filter(whitepct== max(whitepct)) %>%
+  ggplot() + 
+  geom_sf(data = md_race_income_2019_webmerc) +
+  geom_sf(aes(fill = whitepct), lwd = NA) + 
+  theme_dark() + 
+  ggtitle("Census Tract in Baltimore City with highest percentage of White Population") +
+  theme(plot.title = element_text(size = 11.5)) +
+  xlab("Longitude") +
+  ylab("Latitude")
+
+# plot tract with the highest median household income over the full Balt City map
+md_race_income_2019_webmerc %>% 
+  filter(med_hh_incE > 30000) %>% 
+  filter(med_hh_incE== max(med_hh_incE)) %>%
+  ggplot() + 
+  geom_sf(data = md_race_income_2019_webmerc) +
+  geom_sf(aes(fill = med_hh_incE), lwd = NA) + 
+  theme_dark() + 
+  ggtitle("Census Tract in Baltimore City with highest Median Household Income") +
+  theme(plot.title = element_text(size = 11.5)) +
+  xlab("Longitude") +
+  ylab("Latitude")
+```
+
+**4. Create a third column using the bi_class function from the tutorial. (2 points)**
+
+```{r q4}
+
+# create classes using call for bi_class function of dimension 3 with jenks break 
+bi_md_race_inc <- bi_class(md_race_income_2019_webmerc, x = whitepct, y = med_hh_incE, style = "jenks", dim = 3)
+
+# use table to ensure classes were properly allocated
+table(bi_md_race_inc$bi_class)
+```
+
+**5. Create a bivariate map with your data. (3 points)**  
+
+```{r q5}
+
+# store plot in a new variable `map` to call later when plotting with legend
+map <- ggplot() +
+  geom_sf(data = bi_md_race_inc, mapping = aes(fill = bi_class), color = "white", size = 0.1, show.legend = FALSE) + 
+  bi_scale_fill(pal = "DkBlue", dim = 3) +
+  labs(
+    title = "Race and Income Baltimore City, MD",
+    subtitle = "Dark Blue (DkBlue) Palette"
+  ) +
+  bi_theme()
+
+# plot the new map
+plot(map)
+```
+
+**6. Use the cowplot package and ggdraw, like in the tutorial to add a legend (2 points)**.
+
+```{r q6}
+
+# create bivaraite legend and store in new variable to plot with map 
+legend <- bi_legend(pal = "DkBlue",
+                    dim = 3,
+                    xlab = "Higher % White ",
+                    ylab = "Higher Income ",
+                    size = 6)
+
+# combine map with legend into new variable
+finalPlot <- ggdraw() +
+  draw_plot(map, 0, 0, 1, 1) +
+  draw_plot(legend, 0.22, .05, 0.25, 0.25)
+
+# plot variable containing map and legend
+plot(finalPlot)
+```
+
+**7. Rinse and repeat for another county of your choosing, using a _different_ color scheme. Be sure to use Psuedo-Mercator (3857). (5 points)**
+
+```{r q7.1}
+
+# use tidycensus to obtain tract data for total pop, non-hispanic white pop, and household median income for Calvert County 
+cc_race_income_2019 <- get_acs(geography = "tract",
+                            variables = c("non_his_white" = "B03002_003", # non-hispanic white population
+                                          "total_pop" = "B03002_001", # total population
+                                          "med_hh_inc" = "B19013_001" # Median household income
+                                          ),
+                            year = 2019,
+                            state = c(24), # Maryland
+                            county = c(9), # Calvert County
+                            survey = "acs5", # 5 year survey
+                            geometry = TRUE, #to download for mapping
+                            output = "wide")
+
+# create a new variable to append to our data representing percent white population per tract
+cc_race_income_2019$whitepct <- (cc_race_income_2019$non_his_whiteE / cc_race_income_2019$total_popE) * 100
+
+# Get a general idea of values for each column to narrow down filtering for max function
+head(cc_race_income_2019)
+
+cc_race_income_2019 <- cc_race_income_2019 %>%
+  filter(total_popE > 0)
+
+# filter percent white pop to determine the max value 
+cc_race_income_2019 %>%
+  filter(whitepct > 80) %>% # use values above 80% to narrow down our search
+  filter(whitepct== max(whitepct))
+
+# filter medium household income to determine max value
+cc_race_income_2019 %>% 
+  filter(med_hh_incE > 30000) %>% # use values above 30000 to narrow our search
+  filter(med_hh_incE== max(med_hh_incE))
+```
+
+```{r q7.2}
+
+# check initial projection (should be NAD83)
+st_crs(cc_race_income_2019)
+
+# use st_transform to reproject
+cc_race_income_2019_webmerc <- st_transform(cc_race_income_2019, crs = 3857)
+
+# check to make sure the transform worked
+st_crs(cc_race_income_2019_webmerc)
+
+```
+
+```{r q7.3}
+
+# create classes using call for bi_class function of dimension 3 with quantile break 
+bi_cc_race_inc <- bi_class(cc_race_income_2019_webmerc, x = whitepct, y = med_hh_incE, style = "quantile", dim = 3)
+
+# use table to ensure classes were properly allocated
+table(bi_cc_race_inc$bi_class)
+
+# store plot in a new variable `cc_map` to call later when plotting with legend
+cc_map <- ggplot() +
+  geom_sf(data = bi_cc_race_inc, mapping = aes(fill = bi_class), color = "white", size = 0.1, show.legend = FALSE) +
+  bi_scale_fill(pal = "DkViolet", dim = 3) +
+  labs(
+    title = "Race and Income Calvert County, MD",
+    subtitle = "Dark Violet (DkViolet) Palette"
+  ) +
+  bi_theme()
+
+# create bivaraite legend and store in new variable to plot with map 
+cc_legend <- bi_legend(pal = "DkViolet",
+                    dim = 3,
+                    xlab = "Higher % White ",
+                    ylab = "Higher Income ",
+                    size = 6)
+
+# combine map with legend
+cc_finalPlot <- ggdraw() +
+  draw_plot(cc_map, 0, 0, 1, 1) +
+  draw_plot(cc_legend, 0.22, .05, 0.25, 0.25)
+
+# plot final map
+plot(cc_finalPlot)
+
+```
+
+**8. Write the bi_class output to a geojson file. (1 points)**
+
+```{r q8}
+
+# Write original object out as geojson file to open in qgis
+st_write(bi_cc_race_inc, "bi_cc_race_inc.geojson", append = TRUE)
+
+
+```
+
+**9. Now open your geojson output and create a QGIS map of your bivariate map. Put an image of that map here. (2 points)**
+
+```{r pressure, echo=FALSE, fig.cap="Bivariate Map", out.width = '100%'}
+
+# use knitr and call include_graphics to post png of map made from geojson transfered to QGIS
+knitr::include_graphics("Bivariate Map of Calvert County Income versus White Population.png")
+```
+
+**10. Use qgis2web and put a link here to your github site with the webmap of your bivariate map. (3 points)**
+
+Link to Github Page Below:
+
+https://mfick1.github.io/
+
+## 3. Reflection (3 points)
+
+This reflection is free-form. Use this as a space to note: 
+
+This lab greatly enhanced my knowledge of how to define and call multiple map features into the same plot through R. In previous labs, the legend was always a function of the initial map that was defined as a quality of the data during plotting, but in this lab, we created the bivariate legend separately from the map itself and called them together to display in the same image. This allows for much greater flexibility and customization of other features of the map that aren't simply just displaying the data. This will be useful knowledge as I begin to create more and more complex maps over time using R. Prior to this lab I also only new how to generate a bivaraite map through `multiply` of two datasets in QGIS which can be a bit more finicky and harder to define classes. In R this process seems to allow for more ease in adjusting values as desired for an overall more effective map.
+
+## 4. Extra Credit (2 points)
+
+**Put an image as a legend in your web map.**
+
+(See webmap)
+
+Knit your document to a .html file.  Submit this knitted document.
+
