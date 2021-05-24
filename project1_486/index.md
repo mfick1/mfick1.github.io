@@ -10,8 +10,9 @@ The objective of these maps is to first show the progression and relative locati
 
 ### Data 
 I used the USGS earthquake catalog to obtain all earthquake point data:
-[found here](https://earthquake.usgs.gov/earthquakes/map/?extent=-12.38293,-140.625&extent=68.65655,-49.21875&map=false) 
-<br>Japanese census data was used for population estimates from the Statistics Bureau of Japan:[found here](https://www.stat.go.jp/english/data/chiri/map/index.html)<br/> 
+<br>[https://earthquake.usgs.gov/earthquakes/map/?extent=-12.38293,-140.625&extent=68.65655,-49.21875&map=false](https://earthquake.usgs.gov/earthquakes/map/?extent=-12.38293,-140.625&extent=68.65655,-49.21875&map=false)<br/> 
+<br>Japanese census data was used for population estimates from the Statistics Bureau of Japan:<br/>
+[https://www.stat.go.jp/english/data/chiri/map/index.html](https://www.stat.go.jp/english/data/chiri/map/index.html) 
 
 
 ### Maps:
