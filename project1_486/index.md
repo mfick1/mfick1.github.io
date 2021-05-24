@@ -14,10 +14,13 @@ I used the USGS earthquake catalog to obtain all earthquake point data: https://
 
 ### <p align="center"> Maps: <p/>
 The first map below is a GIF that depicts the progression of seismic activity in Japan over the last 5 decades (1970-2020):
+
 <img src="images/Japan Major Earthquakes over 50 years (1970-2020) (1).gif?raw=true"/>
 
 The next map below depicts the potential range of geologic hazards of hypothetcial Mt. Fuji Eruption:
+
 <img src="images/Potential Hazard Zones from Mt Fuji Eruption (1).png?raw=true"/>
 
 The final map below depicts the potential range of Japanese population at risk from geologic hazards of potential Mt. Fuji eruption. 
+
 <img src="images/Population in Danger from Eruption (1).png?raw=true"/>
