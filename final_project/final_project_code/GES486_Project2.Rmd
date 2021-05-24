@@ -1,0 +1,47 @@
+---
+title: "Risk of Trans-Alaskan Pipeline Burst From Seismic Avtivity"
+subtitle: GES 486 Proj 2
+output: 
+html_document:
+keep_md: true
+author: Mathieu Fick (mfick1@umbc.edu)
+---
+
+
+## Setup
+First, we will load in the various packages we need and set our API Key. We also need to set our workspace and set `tigris_class` = `sf`.
+
+```{r setup}
+# packages
+library(tidyverse)
+library(tidycensus)
+library(sf)
+library(ggplot2)
+
+# settings for tidycensus
+options(tigris_class = "sf")
+options(tigris_use_cache = TRUE)
+census_api_key("2a0112f9d529d3d55144acc4e6ae3bb9bb49cb5c", install = TRUE, overwrite = TRUE)
+
+setwd("D:/UMBC Spring 2021 Semester/GES 486/Project 2")
+```
+
+## Get Census Data
+Then we use the `get_acs` command to get data from the Census specifying which population variables we want to get. In this case we are looking at total population in Alaska in 2019.Due to internal errors with this program at the time of download, we are limited in our parameters and total variables we can obtain.
+```{r download census}
+
+# This gets the 2015-2019 population from the ACS
+ak_pop_2019 <- get_acs(geography = "county", 
+     variables = c("total_pop" = "B02001_001" # Total population
+     ),
+     year = 2019,
+     survey = "acs5",
+     state = c(02), # Alaska
+     geometry = TRUE, # do not download the shapefile with the data
+     output = "wide") # we need this
+
+# We now have raw data that we should write out to file
+# Because we're going to save in geojson, we're going to transform to 3857
+st_write(st_transform(ak_pop_2019, 3857), "ak_pop_2019.geojson", append = TRUE)
+
+```
